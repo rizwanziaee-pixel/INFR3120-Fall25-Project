@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+
+<div class="container mt-4">
+  <h2>Your Tasks</h2>
+  <a href="/tasks/add" class="btn btn-success mb-3">+ Add New Task</a>
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Title</th>
+      <th>Due Date</th>
+      <th>Category</th>
+      <th>Actions</th>
+    </tr>
+
+    <% tasks.forEach(task => { %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.due %></td>
+        <td><%= task.category %></td>
+        <td>
+          <a href="/tasks/edit/<%= task._id %>" class="btn btn-warning btn-sm">Edit</a>
+          <a href="/tasks/delete/<%= task._id %>" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+      </tr>
+    <% }) %>
+  </table>
+</div>
+
+<%- include('partials/footer') %>
