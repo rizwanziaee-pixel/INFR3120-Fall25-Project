@@ -1,4 +1,4 @@
-require('dotenv').config();        // load env first
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -31,7 +31,7 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  
   res.status(err.status || 500);
   res.render('error');
 });
@@ -39,10 +39,8 @@ app.use(function(err, req, res, next) {
 // DON'T call app.listen here — bin/www will start the server.
 // app.listen(3000);  <-- remove this
 
-const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected Successfully"))
-  .catch(err => console.error("❌ MongoDB Connection Error:", err));
+const connectDB = require('./db');
+connectDB();
 
 module.exports = app;
