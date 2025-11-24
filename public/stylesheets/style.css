@@ -1,0 +1,37 @@
+.logo-shadow {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.95);
+}
+footer {
+  /* existing styles */
+  font-size: 1.2em;
+}
+body {
+  margin: 0;                 /* remove default margin so navbar reaches edges */
+  padding: 40px;
+  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+  background: #f2f2f5;
+  color: #222;
+}
+
+/* Full-width navbar */
+nav.navbar {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #111;    /* darker looks cleaner */
+  color: white;
+  box-sizing: border-box;    /* ensures padding doesn't break full width */
+}
+
+.navbar-brand img {
+  vertical-align: middle;
+}
+
+a {
+  color: #0077cc;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #005fa3;
+  text-decoration: underline;
+}
