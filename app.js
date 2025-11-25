@@ -22,6 +22,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.use("/", require("./routes/auth"));
+
 app.use(function(req, res, next) {
   next(createError(404));
 });
