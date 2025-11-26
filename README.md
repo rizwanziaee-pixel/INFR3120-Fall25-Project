@@ -1,4 +1,4 @@
-# INFR3120-Fall25-Project       https://tasknest-inc7.onrender.com/
+# INFR3120-Fall25-Project       https://tasknest-inc7.onrender.com/, part 2: https://tasknest2.onrender.com
 Group 34,  Osman Bilal - 100977834, Rizwan Ziaee - 100972962, Yinka Onabanjo Iseoluwanimi - 100963897
 
 https://github.com/rizwanziaee-pixel/INFR3120-Fall25-Project.git
