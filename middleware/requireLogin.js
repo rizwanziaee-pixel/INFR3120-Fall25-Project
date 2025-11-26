@@ -1,5 +1,5 @@
 module.exports = function requireLogin(req, res, next) {
-    if (!req.session.user) {
+    if (!req.isAuthenticated || !req.isAuthenticated()) {
         return res.redirect("/login");
     }
     next();

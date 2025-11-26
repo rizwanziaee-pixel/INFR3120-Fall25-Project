@@ -3,7 +3,7 @@ var router = express.Router();
 
 const Task = require('../models/Task');
 const taskController = require('../controllers/taskController');
-const { requireLogin } = require('../middleware/auth');
+const requireLogin = require('../middleware/requireLogin');
 
 // -------------------------
 // Landing Page
