@@ -10,6 +10,8 @@ var logger = require('morgan');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('./config/passport');
+const passwordRouter = require("./routes/password");
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -56,6 +58,9 @@ app.use("/", require("./routes/auth"));
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+app.use("/password", require("./routes/password"));
+
 
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
