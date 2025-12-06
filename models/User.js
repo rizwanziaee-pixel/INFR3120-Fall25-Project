@@ -33,6 +33,11 @@ const UserSchema = new mongoose.Schema({
         sparse: true
     },
     
+    discordId: {
+        type: String,
+        sparse: true
+    },
+    
     // Profile picture path
     profilePicture: {
         type: String,

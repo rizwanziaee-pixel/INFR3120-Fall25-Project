@@ -1,7 +1,10 @@
+// routes/auth.js
 const express = require("express");
 const passport = require("passport");
 const User = require("../models/User");
 const router = express.Router();
+
+// ==================== LOCAL AUTH ====================
 
 // Show Register Page
 router.get("/register", (req, res) => {
@@ -32,7 +35,47 @@ router.post("/login",
   })
 );
 
-// Logout
+// ==================== GOOGLE OAUTH ====================
+
+router.get("/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+router.get("/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  (req, res) => {
+    res.redirect("/");
+  }
+);
+
+// ==================== GITHUB OAUTH ====================
+
+router.get("/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+
+router.get("/github/callback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  (req, res) => {
+    res.redirect("/");
+  }
+);
+
+// ==================== DISCORD OAUTH ====================
+
+router.get("/discord",
+  passport.authenticate("discord")
+);
+
+router.get("/discord/callback",
+  passport.authenticate("discord", { failureRedirect: "/login" }),
+  (req, res) => {
+    res.redirect("/");
+  }
+);
+
+// ==================== LOGOUT ====================
+
 router.post("/logout", (req, res) => {
   req.logout(() => {
     res.redirect("/");
