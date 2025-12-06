@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Show Register Page
 router.get("/register", (req, res) => {
-  res.render("register", { title: "Register" });
+  res.render("auth/register", { title: "Register", error: null });
 });
 
 // Handle Register
@@ -15,13 +15,13 @@ router.post("/register", async (req, res) => {
     await User.register(user, req.body.password);
     res.redirect("/login");
   } catch (err) {
-    res.render("register", { title: "Register", error: err.message });
+    res.render("auth/register", { title: "Register", error: err.message });
   }
 });
 
 // Show Login Page
 router.get("/login", (req, res) => {
-  res.render("login", { title: "Login" });
+  res.render("auth/login", { title: "Login" });
 });
 
 // Handle Login
@@ -40,4 +40,3 @@ router.post("/logout", (req, res) => {
 });
 
 module.exports = router;
-

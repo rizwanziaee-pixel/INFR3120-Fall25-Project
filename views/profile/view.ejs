@@ -1,197 +1,131 @@
-<!-- views/profile/view.ejs -->
-<!-- MEMBER 1: Profile view page -->
-
 <%- include('../partials/header') %>
 
-<div class="container mt-4 fade-in">
+<div class="content-wrapper">
+  <div class="container">
     <!-- Success/Error Messages -->
     <% if (locals.success && success.length > 0) { %>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <%= success %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
     <% } %>
     
     <% if (locals.error && error.length > 0) { %>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <%= error %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
     <% } %>
 
     <!-- Profile Header Section -->
     <div class="profile-header">
-        <img src="<%= user.profilePicture %>" alt="Profile Picture" class="profile-avatar">
-        <h2 class="mt-3"><%= user.username %></h2>
-        
-        <% if (user.email) { %>
-            <p class="mb-0">
-                <svg width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                    <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
-                </svg>
-                <%= user.email %>
-            </p>
-        <% } %>
-        
-        <p class="mb-0" style="opacity: 0.9;">
-            <svg width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
-            </svg>
-            Member since <%= new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
-        </p>
+      <img src="<%= user.profilePicture %>" alt="Profile Picture" class="profile-avatar">
+      <h2 class="mt-3"><%= user.username %></h2>
+      
+      <% if (user.email) { %>
+        <p class="mb-0"><%= user.email %></p>
+      <% } %>
+      
+      <p class="mb-0 text-muted">
+        Member since <%= new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+      </p>
     </div>
 
     <!-- Profile Management Cards -->
     <div class="row mt-4">
-        
-        <!-- Upload Profile Picture Card -->
-        <div class="col-md-6 mb-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">
-                        <svg width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
-                            <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                            <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
-                        </svg>
-                        Upload Profile Picture
-                    </h5>
-                    <p class="text-muted mb-3">Choose a new profile picture (max 5MB, JPG/PNG/GIF)</p>
-                    
-                    <!-- Upload Form -->
-                    <form action="/profile/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
-                        <div class="mb-3">
-                            <input type="file" 
-                                   name="profilePicture" 
-                                   class="form-control" 
-                                   accept="image/jpeg,image/png,image/gif"
-                                   id="fileInput"
-                                   required>
-                            <small class="text-muted">Accepted formats: JPEG, PNG, GIF</small>
-                        </div>
-                        
-                        <!-- Image Preview -->
-                        <div id="imagePreview" class="mb-3" style="display: none;">
-                            <img id="preview" src="" alt="Preview" style="max-width: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary w-100">
-                            <svg width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
-                            </svg>
-                            Upload Picture
-                        </button>
-                    </form>
-                    
-                    <!-- Delete Picture Button -->
-                    <% if (user.profilePicture !== '/images/default-avatar.png') { %>
-                        <form action="/profile/delete-picture" method="POST" class="mt-2" onsubmit="return confirm('Are you sure you want to remove your profile picture?');">
-                            <button type="submit" class="btn btn-outline-danger w-100">
-                                <svg width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                </svg>
-                                Remove Picture
-                            </button>
-                        </form>
-                    <% } %>
-                </div>
-            </div>
+      
+      <!-- Upload Profile Picture Card -->
+      <div class="col-md-6 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Upload Profile Picture</h5>
+            <p class="text-muted mb-3">Choose a new profile picture (max 5MB, JPG/PNG/GIF)</p>
+            
+            <!-- Upload Form -->
+            <form action="/profile/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+              <div class="mb-3">
+                <input type="file" 
+                       name="profilePicture" 
+                       class="form-control" 
+                       accept="image/jpeg,image/png,image/gif"
+                       id="fileInput"
+                       required>
+                <small class="text-muted">Accepted formats: JPEG, PNG, GIF</small>
+              </div>
+              
+              <!-- Image Preview -->
+              <div id="imagePreview" class="mb-3" style="display: none;">
+                <img id="preview" src="" alt="Preview" style="max-width: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+              </div>
+              
+              <button type="submit" class="btn btn-primary w-100">Upload Picture</button>
+            </form>
+            
+            <!-- Delete Picture Button -->
+            <% if (user.profilePicture !== '/images/default-avatar.png') { %>
+              <form action="/profile/delete-picture" method="POST" class="mt-2" onsubmit="return confirm('Are you sure you want to remove your profile picture?');">
+                <button type="submit" class="btn btn-outline-danger w-100">Remove Picture</button>
+              </form>
+            <% } %>
+          </div>
         </div>
+      </div>
 
-        <!-- Profile Settings Card -->
-        <div class="col-md-6 mb-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">
-                        <svg width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
-                            <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
-                        </svg>
-                        Account Settings
-                    </h5>
-                    
-                    <div class="d-grid gap-2 mt-4">
-                        <a href="/profile/edit" class="btn btn-outline-primary">
-                            <svg width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                            </svg>
-                            Edit Profile Information
-                        </a>
-                        
-                        <a href="/change-password" class="btn btn-outline-warning">
-                            <svg width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
-                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
-                            </svg>
-                            Change Password
-                        </a>
-                    </div>
-
-                    <!-- Account Info -->
-                    <div class="mt-4 p-3" style="background: #f9fafb; border-radius: 8px;">
-                        <h6 class="mb-2">Account Information</h6>
-                        <small class="text-muted d-block">Username: <strong><%= user.username %></strong></small>
-                        <% if (user.email) { %>
-                            <small class="text-muted d-block">Email: <strong><%= user.email %></strong></small>
-                        <% } %>
-                        <% if (user.googleId) { %>
-                            <small class="text-muted d-block">
-                                <span class="badge bg-primary">Google Connected</span>
-                            </small>
-                        <% } %>
-                        <% if (user.githubId) { %>
-                            <small class="text-muted d-block">
-                                <span class="badge bg-dark">GitHub Connected</span>
-                            </small>
-                        <% } %>
-                    </div>
-                </div>
+      <!-- Profile Settings Card -->
+      <div class="col-md-6 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Account Settings</h5>
+            
+            <div class="d-grid gap-2 mt-4">
+              <a href="/profile/edit" class="btn btn-outline-primary">Edit Profile Information</a>
+              <a href="/password/change" class="btn btn-outline-primary">Change Password</a>
             </div>
+
+            <!-- Account Info -->
+            <div class="mt-4 p-3" style="background: #f9fafb; border-radius: 8px;">
+              <h6 class="mb-2">Account Information</h6>
+              <small class="text-muted d-block">Username: <strong><%= user.username %></strong></small>
+              <% if (user.email) { %>
+                <small class="text-muted d-block">Email: <strong><%= user.email %></strong></small>
+              <% } %>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Quick Actions -->
     <div class="text-center mt-4">
-        <a href="/tasks" class="btn btn-lg btn-primary">
-            <svg width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
-                <path d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z"/>
-                <path d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z"/>
-                <path d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z"/>
-            </svg>
-            View My Tasks
-        </a>
-        <a href="/tasks/add" class="btn btn-lg btn-success">
-            <svg width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-            </svg>
-            Create New Task
-        </a>
+      <a href="/tasks" class="btn btn-lg btn-primary">View My Tasks</a>
+      <a href="/tasks/add" class="btn btn-lg btn-success">Create New Task</a>
     </div>
+  </div>
 </div>
 
 <!-- JavaScript for Image Preview -->
 <script>
-    // Preview image before upload
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            // Check file size (5MB = 5242880 bytes)
-            if (file.size > 5242880) {
-                alert('File size must be less than 5MB!');
-                this.value = '';
-                document.getElementById('imagePreview').style.display = 'none';
-                return;
-            }
-            
-            // Show preview
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('preview').src = e.target.result;
-                document.getElementById('imagePreview').style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+  // Preview image before upload
+  document.getElementById('fileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      // Check file size (5MB = 5242880 bytes)
+      if (file.size > 5242880) {
+        alert('File size must be less than 5MB!');
+        this.value = '';
+        document.getElementById('imagePreview').style.display = 'none';
+        return;
+      }
+      
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('preview').src = e.target.result;
+        document.getElementById('imagePreview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
 </script>
 
 <%- include('../partials/footer') %>

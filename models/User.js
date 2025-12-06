@@ -1,6 +1,4 @@
 // models/User.js
-// MEMBER 1: Updated User model with profile picture support
-
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 
@@ -18,7 +16,7 @@ const UserSchema = new mongoose.Schema({
     // Email for password recovery and notifications
     email: {
         type: String,
-        sparse: true,  // Allows multiple null values
+        sparse: true,
         unique: true,
         lowercase: true,
         trim: true
@@ -35,11 +33,10 @@ const UserSchema = new mongoose.Schema({
         sparse: true
     },
     
-    // MEMBER 1: Profile picture path
-    // Stores the path to the uploaded image
+    // Profile picture path
     profilePicture: {
         type: String,
-        default: '/images/default-avatar.png'  // Default avatar if no picture uploaded
+        default: '/images/default-avatar.JPEG'
     },
     
     // Password reset functionality
@@ -52,11 +49,10 @@ const UserSchema = new mongoose.Schema({
         default: Date.now
     }
 }, {
-    timestamps: true  // Automatically adds createdAt and updatedAt
+    timestamps: true
 });
 
 // Add passport-local-mongoose plugin
-// This adds username/password authentication functionality
 UserSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("User", UserSchema);

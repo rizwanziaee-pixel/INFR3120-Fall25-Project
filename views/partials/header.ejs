@@ -30,6 +30,11 @@
     <div class="collapse navbar-collapse" id="navMenu">
       <ul class="navbar-nav ms-auto">
 
+        <!-- HOME TAB - Always visible -->
+        <li class="nav-item me-3">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+
         <% if (!user) { %>
           <!-- If NOT logged in -->
           <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
@@ -40,7 +45,12 @@
           <li class="nav-item me-3"><a class="nav-link" href="/tasks">My Tasks</a></li>
           <li class="nav-item me-3"><a class="nav-link" href="/tasks/add">Add Task</a></li>
 
-          <!-- 🔹 CHANGE PASSWORD LINK (Added as requested) -->
+          <!-- Profile Link -->
+          <li class="nav-item me-3">
+            <a class="nav-link" href="/profile">Profile</a>
+          </li>
+
+          <!-- Change Password Link -->
           <li class="nav-item me-3">
             <a class="nav-link" href="/password/change">Change Password</a>
           </li>
@@ -62,5 +72,3 @@
     </div>
   </div>
 </nav>
-
-

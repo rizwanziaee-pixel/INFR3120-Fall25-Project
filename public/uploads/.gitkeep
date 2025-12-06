@@ -1,0 +1,15 @@
+# This file ensures the uploads directory is tracked by git
+
+
+
+# Ignore uploaded profile pictures
+public/uploads/*
+
+# But keep the .gitkeep file
+!public/uploads/.gitkeep
+
+# Node modules
+node_modules/
+
+# Environment variables
+.env

@@ -8,14 +8,13 @@ var logger = require('morgan');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('./config/passport');
-const passwordRouter = require("./routes/password");
-
 
 // IMPORT ALL ROUTES
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
-var profileRouter = require('./routes/profile');  // ADD THIS LINE
+var profileRouter = require('./routes/profile');
+var passwordRouter = require('./routes/password');
 
 var app = express();
 
@@ -57,10 +56,11 @@ app.use(function(req, res, next) {
 // ============================================
 // ROUTES - ORDER MATTERS!
 // ============================================
-app.use('/', authRouter);      // Auth routes first
-app.use('/', profileRouter);   // Profile routes second
-app.use('/', indexRouter);     // Index routes third
-app.use('/users', usersRouter); // Users routes last
+app.use('/', authRouter);         // Auth routes (/login, /register, /logout)
+app.use('/password', passwordRouter); // Password routes (/password/change)
+app.use('/', profileRouter);      // Profile routes (/profile, /profile/edit, etc.)
+app.use('/', indexRouter);        // Index routes (/, /tasks, /tasks/add, etc.)
+app.use('/users', usersRouter);   // Users routes
 
 // ============================================
 // 404 handler - MUST BE AFTER ALL ROUTES
@@ -68,8 +68,6 @@ app.use('/users', usersRouter); // Users routes last
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
-app.use("/password", require("./routes/password"));
 
 // ============================================
 // Error handler - MUST BE LAST

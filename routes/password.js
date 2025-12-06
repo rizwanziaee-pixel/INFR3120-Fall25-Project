@@ -10,7 +10,11 @@ function requireAuth(req, res, next) {
 
 // Show password change form
 router.get("/change", requireAuth, (req, res) => {
-    res.render("changePassword", { title: "Change Password" });
+    res.render("changePassword", { 
+        title: "Change Password",
+        error: null,
+        success: null
+    });
 });
 
 // Process password change
@@ -21,7 +25,8 @@ router.post("/change", requireAuth, async (req, res) => {
     if (newPassword !== confirmPassword) {
         return res.render("changePassword", {
             title: "Change Password",
-            error: "New passwords do not match."
+            error: "New passwords do not match.",
+            success: null
         });
     }
 
@@ -31,13 +36,15 @@ router.post("/change", requireAuth, async (req, res) => {
 
         return res.render("changePassword", {
             title: "Change Password",
+            error: null,
             success: "Password updated successfully!"
         });
 
     } catch (err) {
         return res.render("changePassword", {
             title: "Change Password",
-            error: "Current password is incorrect."
+            error: "Current password is incorrect.",
+            success: null
         });
     }
 });
