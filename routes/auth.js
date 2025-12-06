@@ -37,11 +37,11 @@ router.post("/login",
 
 // ==================== GOOGLE OAUTH ====================
 
-router.get("/google",
+router.get("/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-router.get("/google/callback",
+router.get("/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
     res.redirect("/");
@@ -50,11 +50,11 @@ router.get("/google/callback",
 
 // ==================== GITHUB OAUTH ====================
 
-router.get("/github",
+router.get("/auth/github",
   passport.authenticate("github", { scope: ["user:email"] })
 );
 
-router.get("/github/callback",
+router.get("/auth/github/callback",
   passport.authenticate("github", { failureRedirect: "/login" }),
   (req, res) => {
     res.redirect("/");
@@ -63,11 +63,11 @@ router.get("/github/callback",
 
 // ==================== DISCORD OAUTH ====================
 
-router.get("/discord",
+router.get("/auth/discord",
   passport.authenticate("discord")
 );
 
-router.get("/discord/callback",
+router.get("/auth/discord/callback",
   passport.authenticate("discord", { failureRedirect: "/login" }),
   (req, res) => {
     res.redirect("/");
